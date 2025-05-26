@@ -1,7 +1,12 @@
 'use client';
 
+import axios from 'axios';
+
+import { useForm } from 'react-hook-form';
+
 import {
   Button,
+  Form,
   Modal,
   ModalBody,
   ModalContent,
@@ -30,23 +35,50 @@ export default function RemoveFolderModal() {
     router.push('?' + params);
   };
 
+  const {
+    handleSubmit,
+    formState: { isSubmitting, isSubmitSuccessful },
+  } = useForm();
+
+  const onSubmit = handleSubmit(async () => {
+    const response = await axios.delete('/api/folders/' + uid);
+
+    if (response.status === 200) {
+      handleClose();
+      return;
+    }
+  });
+
   return (
     <Modal isOpen={isOpen} onClose={handleClose} size="lg">
-      <ModalContent>
-        <ModalHeader>Slett mappe</ModalHeader>
-        <ModalBody>
-          <p className="text-sm">
-            Er du sikker på at du vil slette denne mappen? Dette kan ikke
-            reverseres.
-          </p>
-        </ModalBody>
-        <ModalFooter>
-          <Button variant="faded" onPress={handleClose}>
-            Avbryt
-          </Button>
-          <Button color="danger">Slett</Button>
-        </ModalFooter>
-      </ModalContent>
+      <Form onSubmit={onSubmit}>
+        <ModalContent>
+          <ModalHeader>Slett mappe</ModalHeader>
+          <ModalBody>
+            <p className="text-sm">
+              Er du sikker på at du vil slette denne mappen? Dette kan ikke
+              reverseres.
+            </p>
+          </ModalBody>
+          <ModalFooter>
+            <Button
+              type="button"
+              isDisabled={isSubmitting || isSubmitSuccessful}
+              variant="faded"
+              onPress={handleClose}
+            >
+              Avbryt
+            </Button>
+            <Button
+              type="submit"
+              color="danger"
+              isLoading={isSubmitting || isSubmitSuccessful}
+            >
+              Slett
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Form>
     </Modal>
   );
 }
