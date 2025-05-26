@@ -37,7 +37,7 @@ export default function RemoveFolderModal() {
 
   const {
     handleSubmit,
-    formState: { isSubmitting, isSubmitSuccessful },
+    formState: { isSubmitting },
   } = useForm();
 
   const onSubmit = handleSubmit(async () => {
@@ -63,17 +63,13 @@ export default function RemoveFolderModal() {
           <ModalFooter>
             <Button
               type="button"
-              isDisabled={isSubmitting || isSubmitSuccessful}
+              isDisabled={isSubmitting}
               variant="faded"
               onPress={handleClose}
             >
               Avbryt
             </Button>
-            <Button
-              type="submit"
-              color="danger"
-              isLoading={isSubmitting || isSubmitSuccessful}
-            >
+            <Button type="submit" color="danger" isLoading={isSubmitting}>
               Slett
             </Button>
           </ModalFooter>
