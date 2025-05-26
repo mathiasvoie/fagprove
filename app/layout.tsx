@@ -25,7 +25,7 @@ export default function RootLayout({
       <body
         className={`${inter.className} antialiased flex flex-col w-full h-[calc(100dvh)] items-center justify-start`}
       >
-        <Header />
+        {/* <Header /> */}
 
         {modals}
 
