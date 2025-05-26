@@ -21,7 +21,7 @@ export default function Layout({ children }: LayoutProps) {
   };
 
   return (
-    <main className="flex items-start justify-center w-full">
+    <main className="flex items-start h-full justify-center w-full overflow-y-auto">
       <>
         <div className="flex flex-col h-auto max-w-[1500px] py-5 w-full">
           <>
