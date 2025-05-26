@@ -14,8 +14,10 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({
+  modals,
   children,
 }: Readonly<{
+  modals: React.ReactNode;
   children: React.ReactNode;
 }>) {
   return (
@@ -24,6 +26,8 @@ export default function RootLayout({
         className={`${inter.className} antialiased flex flex-col w-full h-[calc(100dvh)] items-center justify-start`}
       >
         <Header />
+
+        {modals}
 
         {children}
       </body>
