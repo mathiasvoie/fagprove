@@ -5,6 +5,7 @@ import axios from 'axios';
 import { useForm } from 'react-hook-form';
 
 import {
+  addToast,
   Button,
   Form,
   Modal,
@@ -45,12 +46,26 @@ export default function RemoveFolderModal() {
 
     if (response.status === 200) {
       handleClose();
+      addToast({
+        title: 'Slettet mappe',
+        color: 'success',
+      });
       return;
     }
+
+    addToast({
+      title: 'En feil oppstod',
+      color: 'danger',
+    });
   });
 
   return (
-    <Modal isOpen={isOpen} onClose={handleClose} size="lg">
+    <Modal
+      isOpen={isOpen}
+      onClose={handleClose}
+      size="lg"
+      isDismissable={!isSubmitting}
+    >
       <Form onSubmit={onSubmit}>
         <ModalContent>
           <ModalHeader>Slett mappe</ModalHeader>
