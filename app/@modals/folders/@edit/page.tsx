@@ -13,19 +13,21 @@ import {
 
 import { useRouter, useSearchParams } from 'next/navigation';
 
-export default function CreateFolderModal() {
+export default function EditFolderModal() {
   const router = useRouter();
 
   const searchParams = useSearchParams();
+  const uid = searchParams.get('uid');
   const prompt = searchParams.get('prompt');
   const type = searchParams.get('type');
 
-  const isOpen = prompt === 'create' && type === 'folder';
+  const isOpen = prompt === 'edit' && type === 'folder' && !!uid;
 
   const handleClose = () => {
     const params = new URLSearchParams(searchParams);
     params.delete('prompt');
     params.delete('type');
+    params.delete('uid');
 
     router.push('?' + params);
   };
@@ -33,7 +35,7 @@ export default function CreateFolderModal() {
   return (
     <Modal isOpen={isOpen} onClose={handleClose} size="lg">
       <ModalContent>
-        <ModalHeader>Opprett mappe</ModalHeader>
+        <ModalHeader>Rediger mappe</ModalHeader>
         <ModalBody>
           <Input
             autoFocus
@@ -51,7 +53,7 @@ export default function CreateFolderModal() {
           <Button variant="faded" onPress={handleClose}>
             Avbryt
           </Button>
-          <Button color="primary">Opprett</Button>
+          <Button color="primary">Lagre endringer</Button>
         </ModalFooter>
       </ModalContent>
     </Modal>
