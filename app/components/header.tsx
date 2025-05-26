@@ -8,6 +8,8 @@ import {
 } from './ui/header';
 
 export default function Header() {
+  const onSignInButtonClicked = () => {};
+
   return (
     <HeaderContainer>
       <HeaderSection>
@@ -16,7 +18,9 @@ export default function Header() {
         </HeaderLink>
       </HeaderSection>
       <HeaderSection>
-        <HeaderButton onClick={() => {}}>Logg inn</HeaderButton>
+        <HeaderButton onClick={onSignInButtonClicked} color="primary">
+          Logg inn
+        </HeaderButton>
       </HeaderSection>
     </HeaderContainer>
   );
