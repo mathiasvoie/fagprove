@@ -3,7 +3,7 @@
 @config '../tailwind.config.js';
 
 :root {
-  --background: #e6e6e6;
+  --background: #f3f3f3;
   --foreground: #ffffff;
   --text: #000000;
 }
@@ -19,4 +19,8 @@
 body {
   background: var(--background);
   color: var(--text);
+}
+
+img.white-svg {
+  filter: invert(1);
 }
