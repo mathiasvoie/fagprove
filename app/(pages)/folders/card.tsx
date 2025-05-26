@@ -126,12 +126,22 @@ export default function FolderCard({
           )}
         </div>
       </>
-      <>
-        <p className="font-medium text-lg">{name}</p>
-      </>
-      <>
-        <p className="text-sm text-gray-500">{description}</p>
-      </>
+      <span className="flex flex-col w-full">
+        <>
+          <p className="font-medium text-lg truncate text-ellipsis truncate text-ellipsis text-clip">
+            {name}
+          </p>
+        </>
+        <>
+          {!!description && (
+            <>
+              <p className="text-sm text-gray-500 line-clamp-3">
+                {description}
+              </p>
+            </>
+          )}
+        </>
+      </span>
     </article>
   );
 }
