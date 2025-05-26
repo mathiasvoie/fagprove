@@ -4,21 +4,17 @@
 
 :root {
   --background: #f3f3f3;
-  --foreground: #ffffff;
-  --text: #000000;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --color-text: var(--text);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
 
 body {
   background: var(--background);
-  color: var(--text);
 }
 
 img.white-svg {
