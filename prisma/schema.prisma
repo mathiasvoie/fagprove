@@ -40,7 +40,9 @@ model Tools {
 
 model Images {
   id        String    @id @default(uuid())
-  name      String    @unique
+  name      String
+  extension String
+  size      Int
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
   folders   Folders[]
