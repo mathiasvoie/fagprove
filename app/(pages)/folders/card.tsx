@@ -14,6 +14,8 @@ interface FolderCardProps {
     id: string;
     createdAt: Date;
     updatedAt: Date;
+    size: number;
+    extension: string;
   } | null;
 }
 
@@ -108,8 +110,8 @@ export default function FolderCard({
           {image ? (
             <Image
               draggable={false}
-              src={'/images/uploaded/' + image.name}
-              alt="Pen icon"
+              src={'/uploads/' + image.id + '.' + image.extension}
+              alt="Failed to load resource."
               className="h-full w-full rounded-xl"
               width={100}
               height={100}
