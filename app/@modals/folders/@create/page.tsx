@@ -18,7 +18,8 @@ import {
 } from '@heroui/react';
 
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useEffect, useState } from 'react';
+
+import { useState } from 'react';
 
 export default function CreateFolderModal() {
   const router = useRouter();
@@ -29,24 +30,12 @@ export default function CreateFolderModal() {
 
   const isOpen = prompt === 'create' && type === 'folder';
 
-  const handleClose = () => {
-    const params = new URLSearchParams(searchParams);
-    params.delete('prompt');
-    params.delete('type');
-
-    router.push('?' + params);
-  };
-
   const {
     register,
     handleSubmit,
     reset,
     formState: { isSubmitting, errors },
   } = CreateFolderForm();
-
-  useEffect(() => {
-    console.log(errors);
-  }, [errors]);
 
   const [image, setImage] = useState<File | null>(null);
 
@@ -60,11 +49,24 @@ export default function CreateFolderModal() {
       formData.append('image', image);
     }
 
-    const response = await axios.post('/api/folders', formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
-    });
+    const response = await axios
+      .post('/api/folders', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      })
+      .catch((error) => error);
+
+    const responseData = response.response?.data;
+
+    if (axios.isAxiosError(response)) {
+      if (responseData === 'Folder name already exists.')
+        addToast({
+          title: 'Navnet er allerede i bruk',
+          color: 'danger',
+        });
+      return;
+    }
 
     if (response.status === 200) {
       handleClose();
@@ -72,8 +74,7 @@ export default function CreateFolderModal() {
         title: 'Opprettet mappe',
         color: 'success',
       });
-      setImage(null);
-      reset();
+
       return;
     }
 
@@ -83,6 +84,17 @@ export default function CreateFolderModal() {
       color: 'danger',
     });
   });
+
+  const handleClose = () => {
+    const params = new URLSearchParams(searchParams);
+    params.delete('prompt');
+    params.delete('type');
+
+    setImage(null);
+    reset();
+
+    router.push('?' + params);
+  };
 
   return (
     <Modal
