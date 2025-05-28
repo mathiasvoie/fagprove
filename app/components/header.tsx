@@ -14,13 +14,29 @@ export default function Header() {
     <HeaderContainer>
       <HeaderSection>
         <HeaderLink href="/">
-          <span className="text-xl font-medium">Verktøy Kasse</span>
+          <span className="text-xl font-medium">Fagprøve</span>
         </HeaderLink>
       </HeaderSection>
       <HeaderSection>
-        <HeaderButton onClick={onSignInButtonClicked} color="primary">
-          Logg inn
-        </HeaderButton>
+        <HeaderLink href="/login">
+          <HeaderButton
+            onClick={onSignInButtonClicked}
+            color="primary"
+            variant="light"
+          >
+            Logg inn
+          </HeaderButton>
+        </HeaderLink>
+
+        <HeaderLink href="/register">
+          <HeaderButton
+            onClick={onSignInButtonClicked}
+            color="primary"
+            variant="solid"
+          >
+            Registrer deg
+          </HeaderButton>
+        </HeaderLink>
       </HeaderSection>
     </HeaderContainer>
   );
