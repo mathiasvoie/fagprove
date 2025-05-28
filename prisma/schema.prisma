@@ -9,7 +9,7 @@ datasource db {
 
 model Users {
   id        String   @id @default(uuid())
-	name			String
+  name      String
   email     String   @unique
   password  String
   type      String   @default("user")
@@ -23,6 +23,7 @@ model Folders {
   description String?
   imageId     String?
   image       Images?  @relation(fields: [imageId], references: [id])
+  tools       Tools[]
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }
@@ -32,9 +33,13 @@ model Tools {
   name        String   @unique
   description String?
   imageId     String?
+  image       Images?  @relation(fields: [imageId], references: [id])
   folderId    String?
+  folder      Folders? @relation(fields: [folderId], references: [id])
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+
+  @@unique([id, folderId])
 }
 
 model Images {
@@ -44,5 +49,6 @@ model Images {
   size      Int
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
-  folders   Folders[]
+  folder    Folders[]
+  tool      Tools[]
 }
