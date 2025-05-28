@@ -1,7 +1,18 @@
 'use client';
 
 import { ToastProvider } from '@heroui/react';
+import { SessionProvider } from 'next-auth/react';
 
-export default function Providers() {
-  return <ToastProvider />;
+interface ProvidersProps {
+  children: React.ReactNode;
+}
+
+export default function Providers({ children }: ProvidersProps) {
+  return (
+    <SessionProvider>
+      <ToastProvider />
+
+      {children}
+    </SessionProvider>
+  );
 }
