@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 
 import { prisma } from '@/app/lib/prisma';
-import { CreateFolderSchema } from '@/app/schemas/CreateFolderSchema';
+import { CreateFolderSchema } from '@/app/schemas/CreateFolder';
 import { revalidatePath } from 'next/cache';
 import { ImageService } from '@/app/services/image';
 
