@@ -61,7 +61,7 @@ export default function FolderCard({
   };
 
   return (
-    <article className="group relative bg-white gap-5 w-full flex flex-col rounded-xl p-4 transition-all cursor-pointer duration-300">
+    <article className="group relative bg-gray-50 gap-5 w-full flex flex-col rounded-xl p-4 transition-all cursor-pointer duration-300">
       <>
         <span className="absolute top-0 right-0 p-3">
           <Dropdown>
@@ -106,13 +106,13 @@ export default function FolderCard({
         />
       </>
       <>
-        <div className="flex w-full rounded-xl aspect-video items-center justify-center px-12 grow-0 h-[175px]">
+        <div className="flex w-full rounded-xl overflow-hidden aspect-video items-center justify-center px-12 grow-0 h-[175px]">
           {image ? (
             <Image
               draggable={false}
               src={'/uploads/' + image.id + '.' + image.extension}
               alt="Failed to load resource."
-              className="flex w-full object-fill"
+              className="flex w-full object-cover"
               width={475}
               height={475}
             />
@@ -130,7 +130,12 @@ export default function FolderCard({
       </>
       <span className="flex flex-col w-full">
         <>
-          <p className="font-medium text-lg truncate text-ellipsis">{name}</p>
+          <span className="flex w-full justify-between">
+            <p className="font-medium text-lg truncate text-ellipsis">{name}</p>
+            <span className="px-4 rounded-full bg-green-300/10 text-green-700 items-center justify-center flex">
+              0
+            </span>
+          </span>
         </>
         <>
           {!!description && (
