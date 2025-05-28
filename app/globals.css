@@ -3,12 +3,14 @@
 @config '../tailwind.config.js';
 
 :root {
-  --background: #f3f3f3;
+	--header: #ededed
+  --background: #ffffff;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+	--color-header: var(--header)
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
