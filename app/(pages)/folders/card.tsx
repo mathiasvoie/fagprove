@@ -106,15 +106,15 @@ export default function FolderCard({
         />
       </>
       <>
-        <div className="flex w-full rounded-xl bg-gray-100 aspect-video items-center justify-center px-12 grow-0 h-[175px] object-cover">
+        <div className="flex w-full rounded-xl aspect-video items-center justify-center px-12 grow-0 h-[175px]">
           {image ? (
             <Image
               draggable={false}
               src={'/uploads/' + image.id + '.' + image.extension}
               alt="Failed to load resource."
-              className="h-full w-full rounded-xl"
-              width={100}
-              height={100}
+              className="flex w-full object-fill"
+              width={475}
+              height={475}
             />
           ) : (
             <Image
@@ -122,17 +122,15 @@ export default function FolderCard({
               src="/svg/asset-selection.svg"
               alt="Asset selection icon"
               className="w-full aspect-video"
-              width={100}
-              height={100}
+              width={475}
+              height={475}
             />
           )}
         </div>
       </>
       <span className="flex flex-col w-full">
         <>
-          <p className="font-medium text-lg truncate text-ellipsis truncate text-ellipsis text-clip">
-            {name}
-          </p>
+          <p className="font-medium text-lg truncate text-ellipsis">{name}</p>
         </>
         <>
           {!!description && (
