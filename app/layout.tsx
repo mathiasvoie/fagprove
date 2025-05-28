@@ -5,7 +5,7 @@ import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import Providers from './providers';
 
-// import Header from './components/header';
+import Header from './components/header';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -26,13 +26,13 @@ export default function RootLayout({
       <body
         className={`${inter.className} antialiased flex flex-col w-full h-[calc(100dvh)] items-center justify-start`}
       >
-        {/* <Header /> */}
+        <Providers>
+          <Header />
 
-        {modals}
+          {modals}
 
-        {children}
-
-        <Providers />
+          {children}
+        </Providers>
       </body>
     </html>
   );
