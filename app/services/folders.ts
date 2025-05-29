@@ -73,6 +73,9 @@ export class Folders {
       where: {
         folderId: uid,
       },
+      include: {
+        image: true,
+      },
     });
   }
 }
