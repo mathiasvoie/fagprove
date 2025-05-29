@@ -30,7 +30,8 @@ model Folders {
 
 model Tools {
   id          String   @id @default(uuid())
-  name        String   @unique
+  name        String
+  quantity     Int   @default(1)
   description String?
   imageId     String?
   image       Images?  @relation(fields: [imageId], references: [id])
