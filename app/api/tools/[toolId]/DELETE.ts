@@ -4,6 +4,7 @@ import { NextResponse } from 'next/server';
 import { User } from '@/app/services/user';
 import { prisma } from '@/app/lib/prisma';
 import { revalidatePath } from 'next/cache';
+import { Tools } from '@/app/services/tools';
 
 export async function DELETE(
   req: Request,
@@ -42,12 +43,7 @@ export async function DELETE(
     });
   }
 
-  // Delete the tool from the database
-  await prisma.tools.delete({
-    where: {
-      id: toolId,
-    },
-  });
+  await Tools.deleteFromIdArray([toolId]);
 
   // Revalidate the paths to ensure the cache is updated
   revalidatePath('/tools');

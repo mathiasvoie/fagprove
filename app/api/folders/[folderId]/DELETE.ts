@@ -5,10 +5,11 @@ import { revalidatePath } from 'next/cache';
 import { NextResponse } from 'next/server';
 import { authOptions } from '../../auth/[...nextauth]/auth-options';
 import { User } from '@/app/services/user';
+import { Folders } from '@/app/services/folders';
 
 export async function DELETE(
   req: Request,
-  { params }: { params: { folderId: string } },
+  { params }: { params: Promise<{ folderId: string }> },
 ) {
   // Get the users session
   const session = await getServerSession(authOptions);
@@ -26,7 +27,7 @@ export async function DELETE(
     return NextResponse.json('Unauthorized', { status: 401 });
   }
 
-  const { folderId } = params;
+  const { folderId } = await params;
 
   const folder = await prisma.folders.count({
     where: {
@@ -40,11 +41,7 @@ export async function DELETE(
     });
   }
 
-  await prisma.folders.delete({
-    where: {
-      id: folderId,
-    },
-  });
+  await Folders.deleteByUid(folderId);
 
   revalidatePath('/folders');
 

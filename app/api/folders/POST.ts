@@ -3,10 +3,10 @@ import { NextResponse } from 'next/server';
 import { prisma } from '@/app/lib/prisma';
 import { CreateFolderSchema } from '@/app/schemas/CreateFolder';
 import { revalidatePath } from 'next/cache';
-import { ImageService } from '@/app/services/image';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '../auth/[...nextauth]/auth-options';
 import { User } from '@/app/services/user';
+import { Image } from '@/app/services/image';
 
 export async function POST(req: Request) {
   // Get the users session
@@ -49,7 +49,7 @@ export async function POST(req: Request) {
 
   let imageId: string | undefined;
   if (image) {
-    const response = await ImageService.saveImage(image);
+    const response = await Image.Save(image);
 
     if (!response) {
       return NextResponse.json('Failed to save the image that was provided.', {

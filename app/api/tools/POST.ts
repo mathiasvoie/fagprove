@@ -1,6 +1,6 @@
 import { prisma } from '@/app/lib/prisma';
 import { CreateToolSchema } from '@/app/schemas/CreateTool';
-import { ImageService } from '@/app/services/image';
+import { Image } from '@/app/services/image';
 import { getServerSession } from 'next-auth';
 import { revalidatePath } from 'next/cache';
 import { NextResponse } from 'next/server';
@@ -61,7 +61,7 @@ export async function POST(req: Request) {
 
   // Since image File is always thruthy, we can check if it has a size greater than 0
   if (image && image?.size > 0) {
-    const response = await ImageService.saveImage(image);
+    const response = await Image.Save(image);
 
     if (!response) {
       return NextResponse.json('Failed to save the image that was provided.', {

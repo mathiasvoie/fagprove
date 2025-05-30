@@ -1,4 +1,5 @@
 import { prisma } from '../lib/prisma';
+import { Image } from './image';
 
 export class Folders {
   public static async getAll() {
@@ -32,18 +33,6 @@ export class Folders {
       },
     });
   }
-  public static async getNameByUid(uid: string) {
-    return (
-      await prisma.folders.findUnique({
-        where: {
-          id: uid,
-        },
-        select: {
-          name: true,
-        },
-      })
-    )?.name;
-  }
   public static async getMetadataByUid(uid: string) {
     const folder = await prisma.folders.findUnique({
       where: {
@@ -68,6 +57,7 @@ export class Folders {
       tools: folder.tools.length,
     };
   }
+
   public static async getToolsFromUid(uid: string) {
     return await prisma.tools.findMany({
       where: {
@@ -77,5 +67,34 @@ export class Folders {
         image: true,
       },
     });
+  }
+
+  public static async deleteByUid(uid: string) {
+    const folder = await prisma.folders.findUnique({
+      where: {
+        id: uid,
+      },
+    });
+
+    if (folder) {
+      const tools = await prisma.tools.findMany({
+        where: {
+          folderId: uid,
+        },
+      });
+
+      let imageIds: string[] = [];
+      tools.map((tool) => tool.imageId && imageIds.push(tool.imageId));
+
+      if (folder?.imageId) {
+        await Image.deleteFromUidArray([folder.imageId, ...imageIds]);
+      }
+
+      return await prisma.folders.delete({
+        where: {
+          id: uid,
+        },
+      });
+    }
   }
 }

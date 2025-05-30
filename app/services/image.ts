@@ -1,62 +1,61 @@
-import { writeFileSync } from 'fs';
+import { unlinkSync, writeFileSync } from 'fs';
 
 import { prisma } from '../lib/prisma';
-
-async function isUidOccupied(uid: string) {
-  return (await prisma.images.count({
-    where: {
-      id: uid,
-    },
-  })) > 0
-    ? true
-    : false;
-}
-
-async function GenerateUid() {
-  let uid = crypto.randomUUID();
-
-  while (await isUidOccupied(uid)) {
-    uid = crypto.randomUUID();
+export class Image {
+  private static async isUidOccupied(uid: string) {
+    return (await prisma.images.count({
+      where: {
+        id: uid,
+      },
+    })) > 0
+      ? true
+      : false;
   }
 
-  return uid;
-}
+  private static async generateUid() {
+    let uid = crypto.randomUUID();
 
-const MaxFileSize = 10 * 1000000;
-async function FromFileToBuffer(file: File) {
-  const bytes = await file.arrayBuffer();
+    while (await this.isUidOccupied(uid)) {
+      uid = crypto.randomUUID();
+    }
 
-  if (bytes.byteLength > MaxFileSize) {
-    throw new Error('Image file exceeds the maximum size of 10MB.');
+    return uid;
   }
 
-  const buffer = Buffer.from(bytes);
+  private static getExtension(fileName: string) {
+    const parts = fileName.split('.');
+    return parts.pop();
+  }
 
-  return buffer;
-}
+  private static isFileImage(file: File) {
+    return !file || !(file instanceof File) || !file.type.startsWith('image')
+      ? false
+      : true;
+  }
 
-function getFileExtension(fileName: string) {
-  const parts = fileName.split('.');
-  return parts.pop();
-}
+  private static async convertFromFileToBuffer(file: File) {
+    const bytes = await file.arrayBuffer();
 
-export class ImageService {
-  static async saveImage(file: File) {
-    if (!file || !(file instanceof File)) {
-      throw new Error(
-        'No file was provided to the ImageService saveImage method.',
-      );
+    if (bytes.byteLength > 10 * 1000000) {
+      // 10MB
+      throw new Error('Image file exceeds the maximum size of 10MB.');
     }
 
-    if (!file.type.startsWith('image')) {
-      throw new Error(
-        'File provided was not of type image. Please provide a valid image file.',
-      );
+    const buffer = Buffer.from(bytes);
+
+    return buffer;
+  }
+
+  public static async Save(file: File) {
+    const isImage = this.isFileImage(file);
+
+    if (!isImage) {
+      throw new Error('The provided file is not a  valid image.');
     }
 
-    const uid = await GenerateUid();
-    const buffer = await FromFileToBuffer(file);
-    const extension = getFileExtension(file.name) as string;
+    const uid = await this.generateUid();
+    const buffer = await this.convertFromFileToBuffer(file);
+    const extension = this.getExtension(file.name) as string;
     const size = file.size;
 
     writeFileSync('public/uploads/' + uid + '.' + extension, buffer);
@@ -71,5 +70,45 @@ export class ImageService {
     });
 
     return uid;
+  }
+
+  public static async deleteFromUid(uid: string) {
+    const image = await prisma.images.findUnique({
+      where: {
+        id: uid,
+      },
+    });
+
+    if (image) {
+      unlinkSync('public/uploads/' + image.id + '.' + image.extension);
+
+      await prisma.images.delete({
+        where: {
+          id: uid,
+        },
+      });
+    }
+  }
+
+  public static async deleteFromUidArray(array: string[]) {
+    const images = await prisma.images.findMany({
+      where: {
+        id: {
+          in: array,
+        },
+      },
+    });
+
+    images.map((image) => {
+      unlinkSync('public/uploads/' + image.id + '.' + image.extension);
+    });
+
+    await prisma.images.deleteMany({
+      where: {
+        id: {
+          in: array,
+        },
+      },
+    });
   }
 }
