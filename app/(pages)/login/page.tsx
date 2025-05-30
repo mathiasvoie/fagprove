@@ -53,7 +53,7 @@ export default function LoginPage() {
             // Here we check if there are any errors related to the name field.
             errorMessage={errors?.email?.message}
             // If there are errors related to the name field, we display the error message.
-            isDisabled={isSubmitting}
+            // isDisabled={isSubmitting}
             // If the form is currently being submitted, we disable the input field.
             labelPlacement="outside"
             placeholder="abc@eksempel.no"
@@ -68,7 +68,7 @@ export default function LoginPage() {
             // Here we check if there are any errors related to the name field.
             errorMessage={errors?.password?.message}
             // If there are errors related to the name field, we display the error message.
-            isDisabled={isSubmitting}
+            // isDisabled={isSubmitting}
             // If the form is currently being submitted, we disable the input field.
             labelPlacement="outside"
             placeholder="********"
@@ -86,7 +86,7 @@ export default function LoginPage() {
         <>
           <section className="flex w-full items-center justify-end">
             <>
-              <Button type="submit" color="primary">
+              <Button type="submit" color="primary" isLoading={isSubmitting}>
                 Logg inn
               </Button>
             </>
