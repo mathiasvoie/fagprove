@@ -2,7 +2,10 @@
 
 import Image from 'next/image';
 
+import Dropdown from './dropdown';
+
 export default function ToolCard({
+  id,
   name,
   image,
   quantity,
@@ -11,7 +14,9 @@ export default function ToolCard({
   return (
     <article className="group relative bg-gray-50 gap-5 w-full flex flex-col rounded-xl p-4 transition-all cursor-pointer duration-300">
       <>
-        <span className="absolute top-0 right-0 p-3"></span>
+        <span className="absolute top-0 right-0 p-3">
+          <Dropdown uid={id} />
+        </span>
       </>
       <>
         <div className="flex w-full rounded-xl overflow-hidden aspect-video items-center justify-center grow-0 h-[175px]">
