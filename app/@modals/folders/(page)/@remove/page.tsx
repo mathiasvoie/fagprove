@@ -18,15 +18,19 @@ import {
 import { useRouter, useSearchParams } from 'next/navigation';
 
 export default function RemoveFolderModal() {
+  // Use the useRouter hook to get the router instance
   const router = useRouter();
 
+  // Use the useSearchParams hook to get the search parameters from the URL
   const searchParams = useSearchParams();
   const uid = searchParams.get('uid');
   const prompt = searchParams.get('prompt');
   const type = searchParams.get('type');
 
+  // Check if the modal should be open
   const isOpen = prompt === 'remove' && type === 'folder' && !!uid;
 
+  // Define a function to handle closing the modal
   const handleClose = () => {
     const params = new URLSearchParams(searchParams);
     params.delete('prompt');
@@ -36,11 +40,13 @@ export default function RemoveFolderModal() {
     router.push('?' + params);
   };
 
+  // Initialize the form using react-hook-form
   const {
     handleSubmit,
     formState: { isSubmitting },
   } = useForm();
 
+  // Define a function to handle form submission
   const onSubmit = handleSubmit(async () => {
     const response = await axios.delete('/api/folders/' + uid);
 

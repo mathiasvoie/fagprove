@@ -1,11 +1,8 @@
 'use client';
 
-import axios from 'axios';
-
 import CreateFolderForm from './form';
 
 import {
-  addToast,
   Button,
   Form,
   Input,
@@ -19,78 +16,31 @@ import {
 
 import { useRouter, useSearchParams } from 'next/navigation';
 
-import { useState } from 'react';
-
 export default function CreateFolderModal() {
+  // Use the useRouter hook to get the router instance
   const router = useRouter();
 
+  // Use the useSearchParams hook to get the search parameters from the URL
   const searchParams = useSearchParams();
   const prompt = searchParams.get('prompt');
   const type = searchParams.get('type');
 
+  // Check if the modal should be open
   const isOpen = prompt === 'create' && type === 'folder';
 
+  // Initialize the form using the CreateFolderForm component
   const {
     register,
-    handleSubmit,
+    SubmitHandler,
     reset,
     formState: { isSubmitting, errors },
   } = CreateFolderForm();
 
-  const [image, setImage] = useState<File | null>(null);
-
-  const onSubmit = handleSubmit(async (data) => {
-    const formData = new FormData();
-
-    formData.append('name', data.name);
-    formData.append('description', data?.description || '');
-
-    if (image) {
-      formData.append('image', image);
-    }
-
-    const response = await axios
-      .post('/api/folders', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      })
-      .catch((error) => error);
-
-    const responseData = response.response?.data;
-
-    if (axios.isAxiosError(response)) {
-      if (responseData === 'Folder name already exists.')
-        addToast({
-          title: 'Navnet er allerede i bruk',
-          color: 'danger',
-        });
-      return;
-    }
-
-    if (response.status === 200) {
-      handleClose();
-      addToast({
-        title: 'Opprettet mappe',
-        color: 'success',
-      });
-
-      return;
-    }
-
-    addToast({
-      title: 'En feil oppstod',
-      description: 'Kunne ikke opprette mappen. Vennligst prøv igjen senere.',
-      color: 'danger',
-    });
-  });
-
+  // Define a function to handle closing the modal
   const handleClose = () => {
     const params = new URLSearchParams(searchParams);
     params.delete('prompt');
     params.delete('type');
-
-    setImage(null);
     reset();
 
     router.push('?' + params);
@@ -103,7 +53,7 @@ export default function CreateFolderModal() {
       size="lg"
       isDismissable={!isSubmitting}
     >
-      <Form onSubmit={onSubmit}>
+      <Form onSubmit={SubmitHandler}>
         <ModalContent>
           <ModalHeader>Opprett mappe</ModalHeader>
           <ModalBody>

@@ -1,6 +1,6 @@
 'use client';
 
-import axios, { AxiosError } from 'axios';
+import axios from 'axios';
 import { useForm } from 'react-hook-form';
 
 import {
@@ -11,7 +11,7 @@ import {
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useParams, useRouter, useSearchParams } from 'next/navigation';
 import { useState } from 'react';
-import { Button } from '@heroui/react';
+import { addToast, Button } from '@heroui/react';
 
 export default function CreateToolForm() {
   // Use the useSearchParams hook to get the search parameters from the URL
@@ -47,8 +47,11 @@ export default function CreateToolForm() {
   }
 
   // Define error handler for the form submission
-  function onFormError(error: AxiosError) {
-    console.log(error);
+  function onFormError() {
+    addToast({
+      title: 'Noe gikk galt',
+      color: 'danger',
+    });
   }
 
   // Create a SubmitHandler that uses the form's handleSubmit method

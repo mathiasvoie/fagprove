@@ -17,12 +17,15 @@ import {
 import { useRouter, useSearchParams } from 'next/navigation';
 
 export default function CreateToolModal() {
+  // Use the useRouter hook to get the router instance
   const router = useRouter();
+  // Use the useSearchParams hook to get the search parameters from the URL
   const searchParams = useSearchParams();
 
   const prompt = searchParams.get('prompt');
   const type = searchParams.get('type');
 
+  // Check if the modal should be open
   const handleClose = () => {
     const params = new URLSearchParams(searchParams);
     params.delete('prompt');
@@ -31,8 +34,10 @@ export default function CreateToolModal() {
     router.push('?' + params);
   };
 
+  // Initialize the form using the CreateToolForm component
   const isOpen = prompt === 'create' && type === 'tool';
 
+  // Use the CreateToolForm to get the form methods
   const {
     register,
     SubmitHandler,

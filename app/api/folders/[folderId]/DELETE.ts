@@ -27,23 +27,29 @@ export async function DELETE(
     return NextResponse.json('Unauthorized', { status: 401 });
   }
 
+  // Extract the folderId from the params
   const { folderId } = await params;
 
+  // Check if the folder exists in the database
   const folder = await prisma.folders.count({
     where: {
       id: folderId,
     },
   });
 
+  // If the folder does not exist, return a 404 response
   if (folder === 0) {
     return NextResponse.json('Could not find the requested folder.', {
       status: 404,
     });
   }
 
+  // Delete all tools that belong to the folder that is being deleted
   await Folders.deleteByUid(folderId);
 
+  // Revalidate the paths to ensure the cache is updated
   revalidatePath('/folders');
 
+  // Revalidate the path to ensure the cache is updated
   return NextResponse.json('Folder deleted successfully');
 }
