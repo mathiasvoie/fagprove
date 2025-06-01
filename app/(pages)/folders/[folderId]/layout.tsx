@@ -7,6 +7,9 @@ interface LayoutProps {
 }
 
 import { Folders } from '@/app/services/folders';
+import { getServerSession } from 'next-auth';
+import { authOptions } from '@/app/api/auth/[...nextauth]/auth-options';
+import { User } from '@/app/services/user';
 
 export default async function Layout({
   params,
@@ -17,8 +20,10 @@ export default async function Layout({
 
   const metadata = await Folders.getMetadataByUid(folderId);
 
-  // Check if the user is an administrator
-  const isAdministrator: boolean = true;
+  const session = await getServerSession(authOptions);
+
+  const isAdministrator =
+    session?.user?.id && (await User.isAdministrator(session?.user?.id));
 
   const backButton = (
     <Link

@@ -32,6 +32,7 @@ export default function LoginPage() {
     // If the response is ok, redirect to the folders page.
     if (response?.ok) {
       router.push('/folders');
+      router.refresh();
       return;
     }
 

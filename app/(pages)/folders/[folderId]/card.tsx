@@ -8,6 +8,7 @@ export default function ToolCard({
   id,
   name,
   image,
+  isAdministrator,
   quantity,
   description,
 }: ToolCardProps) {
@@ -15,7 +16,7 @@ export default function ToolCard({
     <article className="group relative bg-gray-50 gap-5 w-full flex flex-col rounded-xl p-4 transition-all cursor-pointer duration-300">
       <>
         <span className="absolute top-0 right-0 p-3">
-          <Dropdown uid={id} />
+          {isAdministrator && <Dropdown uid={id} />}
         </span>
       </>
       <>
@@ -67,6 +68,7 @@ export default function ToolCard({
 interface ToolCardProps {
   folderId: string | null;
   name: string;
+  isAdministrator: boolean;
   id: string;
   quantity: number;
   createdAt: Date;

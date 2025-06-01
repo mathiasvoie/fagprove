@@ -1,24 +1,17 @@
-'use client';
-
-import { Button } from '@heroui/react';
-
-import { useRouter, useSearchParams } from 'next/navigation';
+import { authOptions } from '@/app/api/auth/[...nextauth]/auth-options';
+import { User } from '@/app/services/user';
+import { getServerSession } from 'next-auth';
 
 interface LayoutProps {
+  actions: React.ReactNode;
   children: React.ReactNode;
 }
 
-export default function Layout({ children }: LayoutProps) {
-  const router = useRouter();
-  const searchParams = useSearchParams();
+export default async function Layout({ actions, children }: LayoutProps) {
+  const session = await getServerSession(authOptions);
 
-  const onCreateFolderButtonClick = () => {
-    const params = new URLSearchParams(searchParams);
-    params.set('prompt', 'create');
-    params.set('type', 'folder');
-
-    router.push('?' + params);
-  };
+  const isAdministrator =
+    session?.user?.id && (await User.isAdministrator(session?.user?.id));
 
   return (
     <main className="flex items-start h-full justify-center w-full overflow-y-auto">
@@ -34,11 +27,7 @@ export default function Layout({ children }: LayoutProps) {
                   </p>
                 </span>
               </>
-              <>
-                <Button onPress={onCreateFolderButtonClick} color="primary">
-                  Ny mappe
-                </Button>
-              </>
+              {isAdministrator && actions}
             </nav>
           </>
 

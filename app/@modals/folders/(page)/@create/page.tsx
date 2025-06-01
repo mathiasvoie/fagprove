@@ -134,54 +134,6 @@ export default function CreateFolderModal() {
               className="text-sm"
               placeholder="Din beskrivelse her..."
             />
-            <span className="flex flex-col w-full gap-1">
-              <p className="text-sm">Banner</p>
-              {!image ? (
-                <label className="rounded-xl border-[2px] border-spacing-2 border-dotted p-6 flex border-blue-600 cursor-pointer hover:bg-gray-200 transition-all items-center justify-center">
-                  <span className="flex items-center gap-1">
-                    <svg
-                      className="fill-blue-600"
-                      width={16}
-                      height={16}
-                      viewBox="0 0 448 512"
-                    >
-                      <path d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 144L48 224c-17.7 0-32 14.3-32 32s14.3 32 32 32l144 0 0 144c0 17.7 14.3 32 32 32s32-14.3 32-32l0-144 144 0c17.7 0 32-14.3 32-32s-14.3-32-32-32l-144 0 0-144z" />
-                    </svg>
-                    <p className="text-sm text-blue-600">Legg ved bilde</p>
-                  </span>
-                  <input
-                    onChange={(e) => {
-                      const file = e.target.files?.[0];
-                      if (file) {
-                        setImage(file);
-                      }
-                    }}
-                    type="file"
-                    accept="image/*"
-                    className="hidden"
-                  />
-                </label>
-              ) : (
-                <div className="mt-2 w-full justify-between flex items-center gap-2">
-                  <span className="flex items-center gap-2">
-                    <img
-                      draggable={false}
-                      src={URL.createObjectURL(image)}
-                      alt="Valgt bilde"
-                      className="h-12 w-12 object-cover rounded"
-                    />
-                    <span className="text-xs">{image.name}</span>
-                  </span>
-                  <Button
-                    size="sm"
-                    variant="ghost"
-                    onPress={() => setImage(null)}
-                  >
-                    Fjern
-                  </Button>
-                </div>
-              )}
-            </span>
           </ModalBody>
           <ModalFooter>
             <Button

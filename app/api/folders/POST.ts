@@ -6,7 +6,6 @@ import { revalidatePath } from 'next/cache';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '../auth/[...nextauth]/auth-options';
 import { User } from '@/app/services/user';
-import { Image } from '@/app/services/image';
 
 export async function POST(req: Request) {
   // Get the users session
@@ -18,7 +17,7 @@ export async function POST(req: Request) {
   }
 
   // get if the user is an administrator
-  const isAdministrator = User.isAdministrator(session.user.id);
+  const isAdministrator = await User.isAdministrator(session.user.id);
 
   // If the user is not an administrator, return a 401 Unauthorized response
   if (!isAdministrator) {
@@ -29,7 +28,6 @@ export async function POST(req: Request) {
 
   const name = formdata.get('name') as string;
   const description = formdata.get('description') as string | undefined;
-  const image = formdata.get('image') as File | null;
 
   const isFormValid = CreateFolderSchema.safeParse({ name, description });
 
@@ -47,24 +45,10 @@ export async function POST(req: Request) {
     return NextResponse.json('Folder name already exists.', { status: 400 });
   }
 
-  let imageId: string | undefined;
-  if (image) {
-    const response = await Image.Save(image);
-
-    if (!response) {
-      return NextResponse.json('Failed to save the image that was provided.', {
-        status: 500,
-      });
-    }
-
-    imageId = response;
-  }
-
   await prisma.folders.create({
     data: {
       name,
       description,
-      imageId: imageId,
     },
   });
 

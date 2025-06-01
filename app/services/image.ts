@@ -1,4 +1,4 @@
-import { unlinkSync, writeFileSync } from 'fs';
+import { readFileSync, unlinkSync, writeFileSync } from 'fs';
 
 import { prisma } from '../lib/prisma';
 export class Image {
@@ -110,5 +110,19 @@ export class Image {
         },
       },
     });
+  }
+
+  public static async getFileFromUid(uid: string) {
+    const image = await prisma.images.findUnique({
+      where: {
+        id: uid,
+      },
+    });
+
+    if (!image) {
+      return null;
+    }
+
+    return readFileSync('public/uploads/' + image.id + '.' + image.extension);
   }
 }

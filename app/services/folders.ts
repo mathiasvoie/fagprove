@@ -8,7 +8,6 @@ export class Folders {
         id: true,
         name: true,
         description: true,
-        image: true,
         tools: true,
       },
     });
@@ -19,7 +18,6 @@ export class Folders {
       id: folder.id,
       name: folder.name,
       description: folder.description,
-      image: folder.image,
       tools: folder.tools.length,
     }));
   }
@@ -27,9 +25,6 @@ export class Folders {
     return await prisma.folders.findUnique({
       where: {
         id: uid,
-      },
-      include: {
-        image: true,
       },
     });
   }
@@ -41,7 +36,7 @@ export class Folders {
       select: {
         name: true,
         description: true,
-        image: true,
+
         tools: {
           select: { id: true },
         },
@@ -53,7 +48,7 @@ export class Folders {
     return {
       name: folder.name,
       description: folder.description,
-      image: folder.image,
+
       tools: folder.tools.length,
     };
   }
@@ -86,8 +81,8 @@ export class Folders {
       let imageIds: string[] = [];
       tools.map((tool) => tool.imageId && imageIds.push(tool.imageId));
 
-      if (folder?.imageId) {
-        await Image.deleteFromUidArray([folder.imageId, ...imageIds]);
+      if (imageIds.length !== 0) {
+        await Image.deleteFromUidArray([...imageIds]);
       }
 
       return await prisma.folders.delete({

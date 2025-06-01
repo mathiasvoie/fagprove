@@ -17,7 +17,7 @@ export async function POST(req: Request) {
   }
 
   // get if the user is an administrator
-  const isAdministrator = User.isAdministrator(session.user.id);
+  const isAdministrator = await User.isAdministrator(session.user.id);
 
   // If the user is not an administrator, return a 401 Unauthorized response
   if (!isAdministrator) {
@@ -57,6 +57,7 @@ export async function POST(req: Request) {
     return NextResponse.json('Folder not found', { status: 404 });
   }
 
+  // Make a globally accessible variable for imageId
   let imageId: string | undefined;
 
   // Since image File is always thruthy, we can check if it has a size greater than 0

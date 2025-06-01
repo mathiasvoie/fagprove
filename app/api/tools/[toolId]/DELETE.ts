@@ -19,7 +19,7 @@ export async function DELETE(
   }
 
   // get if the user is an administrator
-  const isAdministrator = User.isAdministrator(session.user.id);
+  const isAdministrator = await User.isAdministrator(session.user.id);
 
   // If the user is not an administrator, return a 401 Unauthorized response
   if (!isAdministrator) {
@@ -43,11 +43,12 @@ export async function DELETE(
     });
   }
 
+  // Delete all tools that belong to the folder that is being deleted
   await Tools.deleteFromIdArray([toolId]);
 
   // Revalidate the paths to ensure the cache is updated
   revalidatePath('/tools');
-  revalidatePath('/tools/[toolId]');
+  revalidatePath('/tools/' + toolId);
 
   // Revalidate the path to ensure the cache is updated
   return NextResponse.json('Successfully deleted tool');

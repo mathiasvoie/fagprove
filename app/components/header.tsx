@@ -1,5 +1,6 @@
 'use client';
-
+import { Session } from 'next-auth';
+import AvatarDropdown from './ui/avatar/dropdown';
 import {
   HeaderButton,
   HeaderContainer,
@@ -7,9 +8,11 @@ import {
   HeaderSection,
 } from './ui/header';
 
-export default function Header() {
-  const onSignInButtonClicked = () => {};
+interface Props {
+  session: Session | null;
+}
 
+export default function Header({ session }: Props) {
   return (
     <HeaderContainer>
       <HeaderSection>
@@ -18,25 +21,22 @@ export default function Header() {
         </HeaderLink>
       </HeaderSection>
       <HeaderSection>
-        <HeaderLink href="/login">
-          <HeaderButton
-            onClick={onSignInButtonClicked}
-            color="primary"
-            variant="light"
-          >
-            Logg inn
-          </HeaderButton>
-        </HeaderLink>
-
-        <HeaderLink href="/register">
-          <HeaderButton
-            onClick={onSignInButtonClicked}
-            color="primary"
-            variant="solid"
-          >
-            Registrer deg
-          </HeaderButton>
-        </HeaderLink>
+        {session ? (
+          <AvatarDropdown session={session} />
+        ) : (
+          <HeaderSection>
+            <HeaderLink href="/login">
+              <HeaderButton color="primary" variant="light">
+                Logg inn
+              </HeaderButton>
+            </HeaderLink>
+            <HeaderLink href="/register">
+              <HeaderButton color="primary" variant="solid">
+                Registrer deg
+              </HeaderButton>
+            </HeaderLink>
+          </HeaderSection>
+        )}
       </HeaderSection>
     </HeaderContainer>
   );
