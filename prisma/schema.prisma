@@ -21,8 +21,6 @@ model Folders {
   id          String   @id @default(uuid())
   name        String   @unique
   description String?
-  imageId     String?
-  image       Images?  @relation(fields: [imageId], references: [id])
   tools       Tools[]
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
@@ -50,6 +48,5 @@ model Images {
   size      Int
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
-  folder    Folders[]
   tool      Tools[]
 }
