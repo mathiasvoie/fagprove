@@ -20,11 +20,7 @@ export class Tools {
       const fileName = tool.image?.name;
       const fileExtension = tool.image?.extension;
 
-      console.log(fileName, fileExtension);
-
       if (fileName && fileExtension && tool?.imageId) {
-        unlinkSync('public/images/' + fileName + '.' + fileExtension);
-
         imageIds.push(tool.imageId);
       }
     });

@@ -36,6 +36,11 @@ export default function CreateToolForm() {
 
   // Define success handler for the form submission
   function onFormSuccess() {
+    addToast({
+      title: 'Opprettet verktøy',
+      color: 'success',
+    });
+
     const params = new URLSearchParams(searchParams);
     params.delete('prompt');
     params.delete('type');

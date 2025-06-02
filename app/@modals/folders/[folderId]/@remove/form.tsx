@@ -18,6 +18,11 @@ export default function RemoveToolForm() {
 
   // Define a function that will be called when form submission is successful
   function onFormSuccess() {
+    addToast({
+      title: 'Verktøyet ble slettet',
+      color: 'success',
+    });
+
     const params = new URLSearchParams(searchParams);
     params.delete('prompt');
     params.delete('type');
