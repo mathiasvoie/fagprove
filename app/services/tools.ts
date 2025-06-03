@@ -1,4 +1,3 @@
-import { unlinkSync } from 'fs';
 import { prisma } from '../lib/prisma';
 import { Image } from './image';
 
