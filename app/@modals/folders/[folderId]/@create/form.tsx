@@ -36,17 +36,21 @@ export default function CreateToolForm() {
 
   // Define success handler for the form submission
   function onFormSuccess() {
+    // Add a success toast notification
     addToast({
       title: 'Opprettet verktøy',
       color: 'success',
     });
 
+    // Create a parameter object which can be changed.
     const params = new URLSearchParams(searchParams);
     params.delete('prompt');
     params.delete('type');
 
+    // Push the client to the new URL with the updated parameters
     router.push('?' + params);
 
+    // Reset the form and image state
     setImage(undefined);
     form.reset();
   }
@@ -61,12 +65,16 @@ export default function CreateToolForm() {
 
   // Create a SubmitHandler that uses the form's handleSubmit method
   const SubmitHandler = form.handleSubmit(async (data) => {
+    // Create a form data object
     const formData = new FormData();
+
+    // Append the data to the formData
     formData.append('name', data.name);
     formData.append('description', data?.description as string);
     formData.append('folderId', folderId as string);
     formData.append('image', image as File);
 
+    // Send the request to the api with the formData
     await axios
       .post('/api/tools', formData, {
         headers: {
