@@ -43,7 +43,7 @@ export async function DELETE(
     });
   }
 
-  // Delete all tools that belong to the folder that is being deleted
+  //  Delete the tool from the database and its associated image
   await Tools.deleteFromIdArray([toolId]);
 
   // Revalidate the paths to ensure the cache is updated
