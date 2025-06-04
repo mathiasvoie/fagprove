@@ -15,6 +15,12 @@ Innstaller moduler
 npm i
 ```
 
+Opprett og start postgres database med docker desktop
+
+```bash
+docker run -d --name NAME -p 5432:5432 -e POSTGRES_PASSWORD=YOUR_PASSWORD postgres
+```
+
 Run prisma opp i mot postgres database kjørt lokalt.
 
 ```bash
