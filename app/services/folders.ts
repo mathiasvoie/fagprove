@@ -85,6 +85,14 @@ export class Folders {
         await Image.deleteFromUidArray([...imageIds]);
       }
 
+      await prisma.tools.deleteMany({
+        where: {
+          id: {
+            in: tools.map((tool) => tool.id),
+          },
+        },
+      });
+
       return await prisma.folders.delete({
         where: {
           id: uid,
