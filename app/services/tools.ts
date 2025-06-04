@@ -14,13 +14,13 @@ export class Tools {
       },
     });
 
-    var imageIds: string[] = [];
+    let imageIds: string[] = [];
     tools.map((tool) => {
       const fileName = tool.image?.name;
       const fileExtension = tool.image?.extension;
 
       if (fileName && fileExtension && tool?.imageId) {
-        imageIds.push(tool.imageId);
+        imageIds = [...imageIds + tool?.imageId]
       }
     });
 

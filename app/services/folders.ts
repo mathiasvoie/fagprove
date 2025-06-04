@@ -79,7 +79,13 @@ export class Folders {
       });
 
       let imageIds: string[] = [];
-      tools.map((tool) => tool.imageId && imageIds.push(tool.imageId));
+      tools.map((tool) => {
+        if (!tool?.imageId) {
+          return
+        }
+
+        imageIds = [...imageIds + tool?.imageId]
+      });
 
       if (imageIds.length !== 0) {
         await Image.deleteFromUidArray([...imageIds]);

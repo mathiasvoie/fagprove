@@ -12,6 +12,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useParams, useRouter, useSearchParams } from 'next/navigation';
 import { useState } from 'react';
 import { addToast, Button } from '@heroui/react';
+import Image from 'next/image';
 
 export default function CreateToolForm() {
   // Use the useSearchParams hook to get the search parameters from the URL
@@ -117,7 +118,7 @@ export default function CreateToolForm() {
       ) : (
         <div className="mt-2 w-full justify-between flex items-center gap-2">
           <span className="flex items-center gap-2">
-            <img
+            <Image
               draggable={false}
               src={URL.createObjectURL(image)}
               alt="Valgt bilde"
